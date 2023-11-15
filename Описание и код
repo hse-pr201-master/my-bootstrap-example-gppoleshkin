@@ -1,0 +1,27 @@
+Для выполнения задания я решил выбрать годовой прирост индекса Московской Биржи за каждый из годов с 2010 по 2020:
+22.4, -16.9, 4.6, -2.3,-7.3,26.7,26.7,7.4,11.7,7,5 соответственно, в %
+Доверительный интервал, которые выдается с помощью используемых инструментов бутстрепа будет равен [0.18818181818181845, 15.229090909090905]
+
+Код ниже
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+!pip install arch
+from arch.bootstrap import IIDBootstrap, IndependentSamplesBootstrap
+
+x = [22.4, -16.9, 4.6, -2.3,-7.3,26.7,26.7,7.4,11.7,7,5]
+print(x)
+print(np.mean(x))
+print("-------------------------")
+
+rng = np.random.default_rng(111111)
+x_fake1 = rng.choice(x, size=len(x))
+print(x_fake1)
+
+n_boot = 1000
+mu_hat_star = [np.mean(rng.choice(x, size=len(x))) for i in range (n_boot)]
+print("-------------------------")
+print(mu_hat_star[1:10])
+print("доверительный интервал:")
+print([np.quantile(mu_hat_star, 0.025), np.quantile(mu_hat_star, 0.975)])
